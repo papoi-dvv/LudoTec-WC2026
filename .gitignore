@@ -1,15 +1,50 @@
 node_modules/
 .next/
 dist/
-/.env
-.env.local
-.env.*.local
 coverage/
+
+# Environment files: never commit real secrets.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+!**/.env*.example
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .DS_Store
+
+# Local Redis persistence
+dump.rdb
+appendonly.aof
+
 /.idea
 .vscode/
 /.parcel-cache
 /.turbo
+/.agents
+/.codex
+
+# Docker-compose overrides and local compose envs
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Secrets and credentials
+secrets/
+*.secret
+*.key
+*.pem
+*.crt
+*.p12
+
+# Environment locals
+/backend/.env
+/frontend/.env.local
+
+# k6 / stress test outputs and artifacts
+docs/test-results/
+stress/results/
+results.json

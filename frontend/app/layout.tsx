@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: 'Plataforma de predicciones deportivas',
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const cookieStore = cookies()
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies()
   const isAuthenticated = !!cookieStore.get('sb-access-token')
 
   return (
