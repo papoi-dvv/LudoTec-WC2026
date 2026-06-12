@@ -22,26 +22,27 @@ CREATE TABLE public.partidos (
     creado_en TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. TABLA DE PREDICCIONES
-CREATE TABLE public.predicciones (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    usuario_id UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
-    partido_id UUID NOT NULL REFERENCES public.partidos(id) ON DELETE CASCADE,
-    marcador_local INT NOT NULL,
-    marcador_visitante INT NOT NULL,
-    puntos_obtenidos INT DEFAULT 0,
-    procesado BOOLEAN DEFAULT FALSE,
-    fecha_creacion TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    UNIQUE(usuario_id, partido_id) -- Evita que un usuario prediga dos veces el mismo partido
-);
-
--- 4. TABLA DE SALAS (GRUPOS PRIVADOS)
+-- 3. TABLA DE SALAS (GRUPOS PRIVADOS)
 CREATE TABLE public.salas (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     nombre TEXT NOT NULL,
     codigo_invitacion TEXT UNIQUE NOT NULL,
     creador_id UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
     creado_en TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. TABLA DE PREDICCIONES
+CREATE TABLE public.predicciones (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    usuario_id UUID NOT NULL REFERENCES public.usuarios(id) ON DELETE CASCADE,
+    sala_id UUID NOT NULL REFERENCES public.salas(id) ON DELETE CASCADE,
+    partido_id UUID NOT NULL REFERENCES public.partidos(id) ON DELETE CASCADE,
+    marcador_local INT NOT NULL,
+    marcador_visitante INT NOT NULL,
+    puntos_obtenidos INT DEFAULT 0,
+    procesado BOOLEAN DEFAULT FALSE,
+    fecha_creacion TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(usuario_id, sala_id, partido_id) -- Evita que un usuario prediga dos veces el mismo partido en la misma sala
 );
 
 -- 5. TABLA INTERMEDIA: MIEMBROS DE LAS SALAS

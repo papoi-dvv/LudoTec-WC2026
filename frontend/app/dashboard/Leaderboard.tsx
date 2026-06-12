@@ -19,9 +19,10 @@ type LeaderboardResponse = {
 
 type LeaderboardProps = {
   salaId: string | null
+  refreshToken?: number
 }
 
-export default function Leaderboard({ salaId }: LeaderboardProps) {
+export default function Leaderboard({ salaId, refreshToken = 0 }: LeaderboardProps) {
   const [leaderboard, setLeaderboard] = useState<LeaderboardResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -56,13 +57,13 @@ export default function Leaderboard({ salaId }: LeaderboardProps) {
       isActive = false
       window.clearInterval(intervalId)
     }
-  }, [salaId])
+  }, [salaId, refreshToken])
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white">
-      <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4">
+    <section id="clasificacion" className="scroll-mt-20 overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between border-b border-zinc-200 bg-zinc-50/70 px-5 py-4">
         <div>
-          <h2 className="text-lg font-semibold text-zinc-950">Leaderboard</h2>
+          <h2 className="text-lg font-semibold text-zinc-950">Tabla de la sala</h2>
           <p className="text-sm text-zinc-500">
             {leaderboard ? `Fuente: ${leaderboard.source === 'redis' ? 'Redis cache' : 'base de datos'}` : 'Selecciona una sala'}
           </p>
@@ -100,7 +101,7 @@ export default function Leaderboard({ salaId }: LeaderboardProps) {
                     <div className="font-medium text-zinc-950">{row.nombre}</div>
                     <div className="text-xs text-zinc-500">{row.email}</div>
                   </td>
-                  <td className="px-5 py-4 text-right font-semibold text-zinc-950">{row.puntaje_total}</td>
+                  <td className="px-5 py-4 text-right font-semibold text-emerald-700">{row.puntaje_total}</td>
                 </tr>
               ))}
 

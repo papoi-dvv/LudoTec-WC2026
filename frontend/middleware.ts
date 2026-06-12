@@ -11,8 +11,8 @@ export function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  // Protect dashboard and rooms
-  if (pathname.startsWith('/dashboard') || pathname.startsWith('/rooms')) {
+  // Protect private app pages
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/rooms') || pathname.startsWith('/admin')) {
     const token = req.cookies.get('sb-access-token')
     if (!token) {
       const loginUrl = new URL('/login', req.url)
@@ -24,5 +24,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/rooms/:path*'],
+  matcher: ['/dashboard/:path*', '/rooms/:path*', '/admin/:path*'],
 }

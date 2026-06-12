@@ -57,6 +57,22 @@ El registro y la creación de la cookie de sesión se ejecutan en el backend Exp
 El frontend solo llama a esas rutas usando `NEXT_PUBLIC_API_URL`; no necesita ni debe tener `SUPABASE_SERVICE_ROLE_KEY`.
 En desarrollo, el backend crea usuarios con `email_confirm: true`, así que no se envía correo de confirmación y el usuario puede iniciar sesión inmediatamente. Para producción, configura SMTP y plantillas en Supabase antes de exigir confirmación por email.
 
+Crear usuario admin de prueba:
+
+```bash
+cd backend
+npm run seed:admin
+```
+
+Credenciales por defecto:
+
+```text
+admin@tecsup.edu.pe
+Admin123456
+```
+
+Puedes cambiarlas con `ADMIN_SEED_EMAIL`, `ADMIN_SEED_PASSWORD` y `ADMIN_SEED_NAME` en `backend/.env`.
+
 ## Ejecucion local
 
 Instala dependencias:
@@ -75,6 +91,9 @@ Ejecuta las migraciones necesarias contra Supabase:
 cd ..
 bash db/migrate.sh db/migrations/001_baseline.sql
 bash db/migrate.sh db/migrations/002_score_processing.sql
+bash db/migrate.sh db/migrations/003_room_scoped_predictions.sql
+bash db/migrate.sh db/migrations/004_reload_postgrest_schema.sql
+bash db/migrate.sh db/migrations/005_prediction_type_metadata.sql
 ```
 
 Levanta Redis en una terminal:
@@ -211,6 +230,8 @@ Reglas de puntaje:
 - 1 punto extra si la predicción fue hecha con más de 24 horas de anticipación.
 - En los últimos 10 minutos antes del partido solo se otorgan puntos base.
 
+Este es el sistema oficial del proyecto. Si se usa un prompt externo para generar pantallas o seeders, no debe reemplazar esta lógica de puntaje ni crear un segundo motor de scoring.
+
 ## Procesamiento de puntajes con Worker
 
 Cuando un administrador finaliza un partido, la API actualiza el resultado y encola un trabajo BullMQ:
@@ -271,6 +292,9 @@ Antes de usar el worker, ejecuta la migración:
 
 ```bash
 bash db/migrate.sh db/migrations/002_score_processing.sql
+bash db/migrate.sh db/migrations/003_room_scoped_predictions.sql
+bash db/migrate.sh db/migrations/004_reload_postgrest_schema.sql
+bash db/migrate.sh db/migrations/005_prediction_type_metadata.sql
 ```
 
 ## Salas y Leaderboard

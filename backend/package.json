@@ -7,6 +7,7 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "worker:score": "node src/workers/scoreWorker.js",
+    "seed:admin": "node scripts/seedAdminUser.js",
     "test": "node --test"
   },
   "keywords": [],

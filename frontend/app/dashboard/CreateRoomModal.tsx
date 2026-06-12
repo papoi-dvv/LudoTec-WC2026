@@ -69,14 +69,15 @@ export default function CreateRoomModal({ onRoomCreated }: CreateRoomModalProps)
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="inline-flex h-10 items-center justify-center rounded-md bg-emerald-600 px-4 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
+        className="inline-flex h-11 items-center justify-center rounded-md bg-white px-4 text-sm font-semibold text-emerald-800 shadow-sm transition hover:bg-emerald-50 disabled:opacity-60"
       >
         Crear Sala
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg overflow-hidden rounded-lg bg-white shadow-2xl">
+            <div className="border-b border-zinc-200 bg-zinc-50 px-6 py-5">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h2 className="text-xl font-semibold text-zinc-950">Crear Sala</h2>
@@ -91,8 +92,9 @@ export default function CreateRoomModal({ onRoomCreated }: CreateRoomModalProps)
                 x
               </button>
             </div>
+            </div>
 
-            <form onSubmit={handleCreateRoom} className="mt-6 space-y-4">
+            <form onSubmit={handleCreateRoom} className="space-y-4 p-6">
               <div>
                 <label htmlFor="room-name" className="block text-sm font-medium text-zinc-800">
                   Nombre de la sala
